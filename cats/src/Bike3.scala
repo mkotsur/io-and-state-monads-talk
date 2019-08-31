@@ -14,8 +14,6 @@ object Bike3 extends IOApp {
   sealed trait Condition
 
   object Condition {
-    type Change = Condition => Condition
-
     case class Normal(cogHealth: Double, chainCycles: Int) extends Condition
     case class Broken(reason: String)                      extends Condition
 
@@ -24,42 +22,14 @@ object Bike3 extends IOApp {
 
   def run(args: List[String]): IO[ExitCode] = {
 
-    val cassette: State[Condition, Int] = State {
-      case b: Condition.Broken => (b, 0)
-      case n @ Condition.Normal(cogHealth, chainCycles) =>
-        val healthDecrease =
-          if (linkPitch(chainCycles) < criticalLinkPitch)
-            normalCogDegradation
-          else extraCogDegradation
-        if (cogHealth > healthDecrease)
-          (n.copy(cogHealth = cogHealth - healthDecrease), 42)
-        else
-          (Condition.Broken("The chain went off"), 0)
+    val cassette: State[Condition, Int] = State { s => ??? }
+
+    val chain: State[Condition, Int] = State { s => ??? }
+
+    def cycleRun(state: Condition): IO[(Condition, Int)] = {
+      // Implement in terms of cassette and chain
+      IO((state, 0))
     }
-
-    val chain: State[Condition, Int] = for {
-      _ <- State[Condition, Unit] {
-        case n: Condition.Normal => (n.copy(chainCycles = n.chainCycles + 1), 42)
-        case b => (b, 0)
-      }
-      c1 <- cassette
-      c2 <- cassette
-      c3 <- cassette
-    } yield c1 + c2 + c3
-
-    def cycleRun(state: Condition): IO[(Condition, Int)] =
-      for {
-        (condition, power) <- SyncIO.eval(chain.run(state)).toIO
-        _ <- condition match {
-          case c @ Condition.Normal(cogHealth, chainCycles) =>
-            IO(
-              println(
-                s"Chain cycles: $chainCycles, Cog health: $cogHealth % , Power: $power"
-              )
-            ) >> cycleRun(c)
-          case Condition.Broken(reason) => IO(println(s"Broken: $reason"))
-        }
-      } yield (condition, power)
 
     for {
       _ <- IO(
