@@ -1,6 +1,6 @@
 import BikeConstants._
 
-object Bicycle0 extends App {
+object Bike0 extends App {
 
   var chainCycles  = 1
   var cogHealth    = 100.0 // %

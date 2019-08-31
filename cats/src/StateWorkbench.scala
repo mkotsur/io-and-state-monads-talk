@@ -1,7 +1,7 @@
 import cats.data.State
 import cats.kernel.{Monoid, Semigroup}
 
-object StateTests extends App {
+object StateWorkbench extends App {
 
   var operations: List[String] = List.empty
   def add(a: Int, b: Int): Int = {
