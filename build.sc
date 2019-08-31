@@ -29,6 +29,13 @@ object cats extends MyScalaModule with ScalafmtModule {
     // ivy"com.github.julien-truffaut::monocle-macro:${Versions.monocle}",
     // ivy"com.github.bigwheel::util-backports:1.1",
   )
+
+  override def moduleDeps: Seq[JavaModule] = Seq(constants)
 }
 
-object naive extends ScalaModule with MyScalaModule with ScalafmtModule
+object naive extends ScalaModule with MyScalaModule with ScalafmtModule {
+
+  override def moduleDeps: Seq[JavaModule] = Seq(constants)
+}
+
+object constants extends ScalaModule with MyScalaModule with ScalafmtModule
