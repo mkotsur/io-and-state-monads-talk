@@ -3,28 +3,11 @@ import cats.kernel.{Monoid, Semigroup}
 
 object StateWorkbench extends App {
 
-  var operations: List[String] = List.empty
-  def add(a: Int, b: Int): Int = {
-    operations :+= s"$a+$b"
-    a + b
-  }
-
   import cats.implicits._
-  1 |+| 2
-  "a" |+| "b"
+  import cats.instances.option._
 
-//  implicit val optionStringSemigroup =
-//    Semigroup.instance[Option[String]](
-//      (a, b) => Some(a.getOrElse("") |+| b.getOrElse(""))
-//    )
-//
-//  Option("a") |+| Option("b")
-
-  val x = add(2, add(3, 3))
-  // "operations" contains 1 operation
-  // instead of 2
-
-  println(operations)
+  val s: State[String, Int] = ???
+  val s1: State[String, Double] = s.flatMap(i => State.pure(0.0))
 
   type MyStateChange[S, A] = S => (S, A)
 

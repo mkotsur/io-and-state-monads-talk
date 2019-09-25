@@ -32,7 +32,6 @@ object Bike1 extends App {
   val chain = (cassetteCycle: () => Int, mileageChange: () => Unit) =>
     () => {
       mileageChange()
-      // Fill has a protection against statefulness
       List(cassetteCycle(), cassetteCycle(), cassetteCycle()).sum
     }
 

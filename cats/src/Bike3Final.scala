@@ -29,14 +29,14 @@ object Bike3Final extends IOApp {
             normalCogDegradation
           else extraCogDegradation
         if (cogHealth > healthDecrease)
-          (n.copy(cogHealth = cogHealth - healthDecrease), 42)
+          (n.copy(cogHealth = cogHealth - healthDecrease), cassetteCyclePower)
         else
           (Condition.Broken("The chain went off"), 0)
     }
 
     val chain: State[Condition, Int] = for {
       _ <- State[Condition, Unit] {
-        case n: Condition.Normal => (n.copy(chainCycles = n.chainCycles + 1), 42)
+        case n: Condition.Normal => (n.copy(chainCycles = n.chainCycles + 1), cassetteCyclePower)
         case b => (b, 0)
       }
       c1 <- cassette

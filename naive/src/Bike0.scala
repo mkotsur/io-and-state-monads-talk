@@ -7,7 +7,7 @@ object Bike0 extends App {
 
   type Cycle = () => Int
 
-  val cassetteCycle: Cycle = () => {
+  val cassette: Cycle = () => {
     if (linkPitch(chainCycles) < criticalLinkPitch) {
       cogHealth -= normalCogDegradation
     } else {
@@ -20,19 +20,19 @@ object Bike0 extends App {
     cassetteCyclePower
   }
 
-    val chainCycle = () => {
+    val chain = () => {
     chainCycles += 1
 
     List(
-      cassetteCycle(),
-      cassetteCycle(),
-      cassetteCycle()
+      cassette(),
+      cassette(),
+      cassette()
     ).sum
   }
 
   var power = 0
   while (true) {
-    power += chainCycle()
+    power += chain()
     println(s"Chain cycles: $chainCycles, Cog health: $cogHealth % , Power: $power")
   }
 
