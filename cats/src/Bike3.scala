@@ -57,7 +57,6 @@ object Bike3 extends IOApp {
           "Hello to our bicycle simulation program. Press ENTER to start!"
         )
       )
-      _ <- IO(StdIn.readLine())
       _ <- cycleRun(Condition.mint, 0)
       (finalCondition, finalPower) <- cycleRun(Condition.mint, 0)
       _ <- IO(println(s"Final condition: $finalCondition"))

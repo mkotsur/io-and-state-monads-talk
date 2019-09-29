@@ -18,17 +18,16 @@ trait MyScalaModule extends ScalaModule {
 object cats extends MyScalaModule with ScalafmtModule {
 
   override def ivyDeps = Agg(
-    ivy"org.typelevel::cats-effect::2.0.0-RC1",
-
-  // ivy"org.typelevel::cats-mtl-core:0.4.0",
-    // ivy"com.olegpy::meow-mtl:0.2.0",
-    // ivy"io.github.timwspence::cats-stm:0.4.0",
-    // ivy"co.fs2::fs2-io:1.0.4",
-    // ivy"io.chrisdavenport::log4cats-slf4j:0.3.0",
-    // ivy"com.github.julien-truffaut::monocle-core:${Versions.monocle}",
-    // ivy"com.github.julien-truffaut::monocle-macro:${Versions.monocle}",
-    // ivy"com.github.bigwheel::util-backports:1.1",
+    ivy"org.typelevel::cats-effect::2.0.0-RC1"
   )
+
+  def run3() = T.command {
+    super.runMain("Bike3")
+  }
+
+  def run3Final() = T.command {
+    super.runMain("Bike3Final")
+  }
 
   override def moduleDeps: Seq[JavaModule] = Seq(constants)
 }
@@ -36,6 +35,15 @@ object cats extends MyScalaModule with ScalafmtModule {
 object naive extends ScalaModule with MyScalaModule with ScalafmtModule {
 
   override def moduleDeps: Seq[JavaModule] = Seq(constants)
+
+  def run1() = T.command {
+    super.runMain("Bike1")
+  }
+
+  def run2() = T.command {
+    super.runMain("Bike2")
+  }
+
 }
 
 object constants extends ScalaModule with MyScalaModule with ScalafmtModule
