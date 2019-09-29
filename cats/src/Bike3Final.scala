@@ -44,19 +44,19 @@ object Bike3Final extends IOApp {
       c3 <- cassette
     } yield c1 + c2 + c3
 
-    def cycleRun(state: Condition): IO[(Condition, Int)] =
+    def cycleRun(state: Condition, power: Int): IO[(Condition, Int)] =
       for {
-        (condition, power) <- SyncIO.eval(chain.run(state)).toIO
-        _ <- condition match {
+        (condition, addedPower) <- SyncIO.eval(chain.run(state)).toIO
+        result <- condition match {
           case c @ Condition.Normal(cogHealth, chainCycles) =>
             IO(
               println(
                 s"Chain cycles: $chainCycles, Cog health: $cogHealth % , Power: $power"
-              )
-            ) >> cycleRun(c)
-          case Condition.Broken(reason) => IO(println(s"Broken: $reason"))
+
+            )) >> cycleRun(c, power + addedPower)
+          case Condition.Broken(_) => IO((condition, power))
         }
-      } yield (condition, power)
+      } yield result
 
     for {
       _ <- IO(
@@ -65,7 +65,9 @@ object Bike3Final extends IOApp {
         )
       )
       _ <- IO(StdIn.readLine())
-      _ <- cycleRun(Condition.mint)
+      (finalCondition, finalPower) <- cycleRun(Condition.mint, 0)
+      _ <- IO(println(s"Final condition: $finalCondition"))
+      _ <- IO(println(s"Final power: $finalPower"))
     } yield ExitCode.Success
   }
 }

@@ -37,21 +37,19 @@ object Bike3 extends IOApp {
       ???
     }
 
-    def cycleRun(state: Condition): IO[(Condition, Int)] = {
-      // TODO: Implement in terms of chain
+    def cycleRun(state: Condition, power: Int): IO[(Condition, Int)] =
       for {
-        (condition, power) <- ??? // TODO: Run one cycle and convert Eval to IO
-        _ <- condition match {
+        (condition, addedPower) <- ???.asInstanceOf[IO[(Condition, Int)]] // TODO: Run one cycle and convert Eval to IO
+        result <- condition match {
           case c @ Condition.Normal(cogHealth, chainCycles) =>
             IO(
               println(
                 s"Chain cycles: $chainCycles, Cog health: $cogHealth % , Power: $power"
-              )
-            ) >> cycleRun(c)
-          case Condition.Broken(reason) => IO(println(s"Broken: $reason"))
+
+              )) >> cycleRun(c, power + addedPower)
+          case Condition.Broken(_) => IO((condition, power))
         }
-      } yield (condition, power)
-    }
+      } yield result
 
     for {
       _ <- IO(
@@ -60,7 +58,10 @@ object Bike3 extends IOApp {
         )
       )
       _ <- IO(StdIn.readLine())
-      _ <- cycleRun(Condition.mint)
+      _ <- cycleRun(Condition.mint, 0)
+      (finalCondition, finalPower) <- cycleRun(Condition.mint, 0)
+      _ <- IO(println(s"Final condition: $finalCondition"))
+      _ <- IO(println(s"Final power: $finalPower"))
     } yield ExitCode.Success
   }
 }
