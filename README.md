@@ -14,11 +14,4 @@ How to run code:
 * `mill naive.run1` or
 * `mill naive.run3` or
 * `mill cats.run3` or
-* `mill cats.run3Final`
-
-## TODO:
-
-* Add an example of debugging with IO Monad;
-* Check Bike/Bicycle renaming;
-* List all the other tools in `cats-effect`
-* Explain how state flatmaps
+* `mill cats.run3Final`.
